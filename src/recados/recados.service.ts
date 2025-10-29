@@ -9,9 +9,9 @@ export class RecadosService {
   private recados: RecadoEntity[] = [
     {
       id: 1,
-      texto: 'Este e um recado de teste',
-      de: 'João',
-      para: 'Joana',
+      texto: '',
+      de: '',
+      para: '',
       lido: false,
       data: new Date(),
     },

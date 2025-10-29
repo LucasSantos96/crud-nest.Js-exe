@@ -26,15 +26,13 @@ Content-Type: application/json
   }
 
 ### Atualiza um recado
-PATCH {{baseUrl}}/recados/3/
+PATCH {{baseUrl}}/recados/1/
 Content-Type: application/json
 
   {
     "texto": "333444",
     "de": "Lucas",
-    "para": "Lara",
-    "lido": true,
-    "data": "2025-10-27T23:26:19.591Z"
+    "para": "Lara"
   }
 
 ### Deleta um recado

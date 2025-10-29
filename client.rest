@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:3000
+
+
+#Recados
+
+###ControllerGetRecado
+# @name RecadosController
+#### Lista todos os recados
+GET {{baseUrl}}/recados/
+?limit=10
+&offset=10
+
+### Lista apenas um recado
+GET {{baseUrl}}/recados/3
+
+### Cria um recado
+POST {{baseUrl}}/recados/
+Content-Type: application/json
+
+  {
+    "texto": " Recado novooo",
+    "de": "João",
+    "para": "Joana",
+    "lido": false,
+    "data": "2025-10-27T23:26:19.591Z"
+  }
+
+### Atualiza um recado
+PATCH {{baseUrl}}/recados/1/
+Content-Type: application/json
+
+  {
+    "texto": "Atualizeiiiiiii",
+    "de": "João",
+    "para": "Joana",
+    "lido": false,
+    "data": "2025-10-27T23:26:19.591Z"
+  }
+
+### Deleta um recado
+DELETE {{baseUrl}}/recados/3/

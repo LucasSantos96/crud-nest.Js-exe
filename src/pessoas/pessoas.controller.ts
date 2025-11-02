@@ -32,7 +32,7 @@ export class PessoasController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
-    return this.pessoasService.update(+id, updatePessoaDto);
+    return this.pessoasService.update(id, updatePessoaDto);
   }
 
   @Delete(':id')

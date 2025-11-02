@@ -1,6 +1,41 @@
 @baseUrl = http://localhost:3000
 
 
+###ControllerGetPessoa
+# @name PessoasController
+#### Lista todos os pessoa
+GET {{baseUrl}}/pessoas/
+?limit=10
+&offset=10
+
+### Lista apenas uma pessoa
+GET {{baseUrl}}/pessoas/3
+
+### Cria uma pessoa
+POST {{baseUrl}}/pessoas/
+Content-Type: application/json
+
+  {
+    "name": "Larissa maques",
+    "email": "larie@email.com",
+    "password": "1234"
+  
+  }
+
+### Atualiza uma pessoa
+PATCH {{baseUrl}}/pessoas/55e8e752-4d7c-4acf-801e-5dae4ac110c4/
+Content-Type: application/json
+
+  {
+    "name": "Lucas Santos",
+    "email": "lusca@email.com",
+    "password": "123456"
+  }
+
+
+
+
+##--------------------------------------------##
 #Recados
 
 ###ControllerGetRecado
@@ -36,3 +71,6 @@ Content-Type: application/json
 
 ### Deleta um recado
 DELETE {{baseUrl}}/recados/6a8d775d-fb27-4f82-920d-44f0c2f68441/
+
+###------------------------------------------------------------###
+

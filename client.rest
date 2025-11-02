@@ -18,22 +18,21 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
   {
-    "texto": " Recado novooo",
+    "texto": " quarto Recado",
     "de": "João",
-    "para": "Joana",
-    "lido": false,
-    "data": "2025-10-27T23:26:19.591Z"
+    "para": "Joana"
+  
   }
 
 ### Atualiza um recado
-PATCH {{baseUrl}}/recados/1/
+PATCH {{baseUrl}}/recados/27f8-17f95952d20d/
 Content-Type: application/json
 
   {
-    "texto": "333444",
+    "texto": "Agora sou o primeiro",
     "de": "Lucas",
     "para": "Lara"
   }
 
 ### Deleta um recado
-DELETE {{baseUrl}}/recados/3/
+DELETE {{baseUrl}}/recados/6a8d775d-fb27-4f82-920d-44f0c2f68441/

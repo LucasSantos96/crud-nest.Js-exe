@@ -1,5 +1,6 @@
 import { CreateRecadosDto } from './dto/create-recado.dto';
 import { UpdateRecadosDto } from './dto/update-recado.dto';
+import { Recado } from './entities/recado.entity';
 import { RecadosService } from './recados.service';
 import {
   Body,
@@ -29,7 +30,7 @@ export class RecadosController {
   }
   //Criar um recado
   @Post()
-  create(@Body() CreateRecadosDto: CreateRecadosDto): CreateRecadosDto {
+  create(@Body() CreateRecadosDto: CreateRecadosDto): Promise<Recado> {
     return this.recadosService.create(CreateRecadosDto);
   }
 

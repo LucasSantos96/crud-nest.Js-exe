@@ -6,7 +6,7 @@ export class CreateRecadosDto {
   @MinLength(5)
   readonly texto: string;
 
-  @IsString()
+  /*@IsString()
   @IsNotEmpty()
   @MinLength(2)
   readonly de: string;
@@ -15,4 +15,5 @@ export class CreateRecadosDto {
   @IsNotEmpty()
   @MinLength(2)
   readonly para: string;
+  */
 }

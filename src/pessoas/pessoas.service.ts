@@ -27,11 +27,6 @@ export class PessoasService {
     const person = await this.PersonRepository.find();
     return person;
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} pessoa`;
-  }
-
   async update(id: string, updatePessoaDto: UpdatePessoaDto) {
     const personData = {
       name: updatePessoaDto?.name,
@@ -46,9 +41,5 @@ export class PessoasService {
       throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
     }
     return this.PersonRepository.save(person);
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} pessoa`;
   }
 }

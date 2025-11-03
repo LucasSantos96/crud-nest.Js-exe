@@ -27,6 +27,13 @@ export class PessoasService {
     const person = await this.PersonRepository.find();
     return person;
   }
+  async findOne(id: string) {
+    const person = await this.PersonRepository.findOne({ where: { id } });
+    if (!person) {
+      throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
+    }
+    return person;
+  }
   async update(id: string, updatePessoaDto: UpdatePessoaDto) {
     const personData = {
       name: updatePessoaDto?.name,

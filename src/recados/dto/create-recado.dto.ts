@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateRecadosDto {
   @IsString()
@@ -6,14 +6,11 @@ export class CreateRecadosDto {
   @MinLength(5)
   readonly texto: string;
 
-  /*@IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @MinLength(2)
-  readonly de: string;
+  deId: string;
 
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @MinLength(2)
-  readonly para: string;
-  */
+  paraId: string;
 }

@@ -4,12 +4,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Recado } from './entities/recado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PessoasService } from 'src/pessoas/pessoas.service';
+import { Person } from 'src/pessoas/entities/pessoa.entity';
 
 @Injectable()
 export class RecadosService {
   constructor(
     @InjectRepository(Recado)
     private readonly recadoRepository: Repository<Recado>,
+    private readonly pessoasService: PessoasService,
   ) {}
 
   async findAll() {
@@ -30,15 +33,33 @@ export class RecadosService {
   }
 
   async create(createRecadosDto: CreateRecadosDto): Promise<Recado> {
+    const { deId, paraId } = createRecadosDto;
+    const de = await this.pessoasService.findOne(deId);
+    const para = await this.pessoasService.findOne(paraId);
+
     const novoRecado = {
       ...createRecadosDto,
+      de,
+      para,
       lido: false,
       data: new Date(),
     };
     // create() apenas instancia a entidade, não precisa de await
     const recado = this.recadoRepository.create(novoRecado);
     // save() é que de fato salva no banco e retorna uma Promise
-    return this.recadoRepository.save(recado);
+    await this.recadoRepository.save(recado);
+    return {
+      ...recado,
+      de: {
+        id: recado.de.id,
+        name: recado.de.name,
+      } as Person,
+
+      para: {
+        id: recado.para.id,
+        name: recado.para.name,
+      } as Person,
+    };
   }
 
   async update(

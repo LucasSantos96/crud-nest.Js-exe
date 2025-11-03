@@ -17,6 +17,11 @@ export class PessoasController {
     return this.pessoasService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.pessoasService.findOne(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
     return this.pessoasService.update(id, updatePessoaDto);

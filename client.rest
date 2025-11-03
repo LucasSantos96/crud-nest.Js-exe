@@ -53,9 +53,9 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
   {
-    "texto": " quarto Recado",
-    "de": "João",
-    "para": "Joana"
+    "texto": " Te amo",
+    "deId": "85c248ba-a300-4a45-9a14-45e57996b4c2",
+    "paraId": "a63d3f62-3bc2-4b31-b1d4-cde262da97f1"
   
   }
 

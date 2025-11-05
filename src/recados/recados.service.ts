@@ -1,3 +1,4 @@
+import { PaginationDto } from 'src/app/common/dto/pagination.dto';
 import { UpdateRecadosDto } from './dto/update-recado.dto';
 import { CreateRecadosDto } from './dto/create-recado.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -15,8 +16,17 @@ export class RecadosService {
     private readonly pessoasService: PessoasService,
   ) {}
 
-  async findAll() {
-    const recados = await this.recadoRepository.find({});
+  async findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
+
+    const recados = await this.recadoRepository.find({
+      take: limit, //quantos registros serão exibidos
+      skip: offset, //quantos registros devem ser pulados
+      //relations: ['de', 'para'],
+      order: {
+        id: 'DESC',
+      },
+    });
     return recados;
   }
 

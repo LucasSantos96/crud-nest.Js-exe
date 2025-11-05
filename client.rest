@@ -42,8 +42,8 @@ Content-Type: application/json
 # @name RecadosController
 #### Lista todos os recados
 GET {{baseUrl}}/recados/
-?limit=10
-&offset=10
+?limit=2
+&offset=0
 
 ### Lista apenas um recado
 GET {{baseUrl}}/recados/3
@@ -53,7 +53,7 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
   {
-    "texto": " Te amo",
+    "texto": " recado novo",
     "deId": "85c248ba-a300-4a45-9a14-45e57996b4c2",
     "paraId": "a63d3f62-3bc2-4b31-b1d4-cde262da97f1"
   

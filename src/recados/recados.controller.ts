@@ -1,3 +1,4 @@
+import { PaginationDto } from 'src/app/common/dto/pagination.dto';
 import { CreateRecadosDto } from './dto/create-recado.dto';
 import { UpdateRecadosDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
@@ -10,6 +11,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 @Controller('recados')
@@ -18,10 +20,8 @@ export class RecadosController {
 
   //ler todos os recados
   @Get()
-  findAll() {
-    //const { limit = 10, offset = 0 } = pagination;
-
-    return this.recadosService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.recadosService.findAll(paginationDto);
   }
   //ler um recado
   @Get(':id')

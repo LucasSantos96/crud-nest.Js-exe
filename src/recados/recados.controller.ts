@@ -12,9 +12,12 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { AddHeaderInterceptor } from 'src/app/common/interceptor/add-header.interceptor';
 
 @Controller('recados')
+@UseInterceptors(AddHeaderInterceptor)
 export class RecadosController {
   constructor(private readonly recadosService: RecadosService) {}
 

@@ -45,6 +45,7 @@ GET {{baseUrl}}/recados/
 ?limit=2
 &offset=0
 
+
 ### Lista apenas um recado
 GET {{baseUrl}}/recados/3
 

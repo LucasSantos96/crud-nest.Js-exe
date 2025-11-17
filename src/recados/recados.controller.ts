@@ -16,6 +16,8 @@ import {
 } from '@nestjs/common';
 import { AddHeaderInterceptor } from 'src/app/common/interceptor/add-header.interceptor';
 
+import { UrlParams } from 'src/app/common/params/url.params';
+
 @Controller('recados')
 @UseInterceptors(AddHeaderInterceptor)
 export class RecadosController {
@@ -23,8 +25,14 @@ export class RecadosController {
 
   //ler todos os recados
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.recadosService.findAll(paginationDto);
+  async findAll(
+    @Query() paginationDto: PaginationDto,
+    @UrlParams() url: string,
+  ) {
+    console.log(url);
+
+    const recados = await this.recadosService.findAll(paginationDto);
+    return recados;
   }
   //ler um recado
   @Get(':id')

@@ -30,7 +30,7 @@ export class Recado {
   updateAt?: Date; //updateAt
 
   @ManyToOne(() => Person, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }) //Muitos recados podem ser enviados por uma unica pessoa(emissor)
-  //Especifica a coluna "de" que armazena o id da pessoa que enviou o recado
+  //Especifica@ a coluna "de" que armazena o id da pessoa que enviou o recado
   @JoinColumn({ name: 'de' })
   de: Person;
 

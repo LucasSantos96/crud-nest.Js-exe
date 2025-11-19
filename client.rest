@@ -16,9 +16,9 @@ POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
   {
-    "name": "Larissa maques",
-    "email": "larie@email.com",
-    "password": "1234"
+    "name": "luiz teste",
+    "email": "luiz@email.com",
+    "password": "123456"
   
   }
 
@@ -29,11 +29,8 @@ Content-Type: application/json
   {
     "name": "Lucas Santos",
     "email": "lusca@email.com",
-    "password": "123456"
+    "password": "12346666"
   }
-
-
-
 
 ##--------------------------------------------##
 #Recados
@@ -74,4 +71,14 @@ Content-Type: application/json
 DELETE {{baseUrl}}/recados/6a8d775d-fb27-4f82-920d-44f0c2f68441/
 
 ###------------------------------------------------------------###
+
+# AUTH
+#### Lista todos os recados
+POST  {{baseUrl}}/auth/
+Content-Type: application/json
+
+{
+  "email": "luiz@email.com",
+  "password": "12344"
+}
 

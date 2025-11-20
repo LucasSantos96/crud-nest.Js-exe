@@ -7,6 +7,7 @@
 GET {{baseUrl}}/pessoas/
 ?limit=10
 &offset=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMmEzNTZiZi01ZTM5LTQ5YzUtOWZmMC1hNmNkY2M3OWM5NTAiLCJpYXQiOjE3NjM2NzY5OTEsImV4cCI6MTc2MzY4MDU5MSwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.FqA6JSDc_Bq-BILR7DMeGNO7gHXSJGWR9uhKwfS_MIs
 
 ### Lista apenas uma pessoa
 GET {{baseUrl}}/pessoas/3
@@ -79,6 +80,6 @@ Content-Type: application/json
 
 {
   "email": "luiz@email.com",
-  "password": "12344"
+  "password": "123456"
 }
 

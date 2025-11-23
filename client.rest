@@ -1,5 +1,7 @@
 @baseUrl = http://localhost:3000
 
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMmEzNTZiZi01ZTM5LTQ5YzUtOWZmMC1hNmNkY2M3OWM5NTAiLCJpYXQiOjE3NjM5Mzg3NzgsImV4cCI6MTc2Mzk0MjM3OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.GRN80padwl98nx1sgRlDKX1tacBXgd2fpW6dXtYxwl8
+
 
 ###ControllerGetPessoa
 # @name PessoasController
@@ -7,18 +9,20 @@
 GET {{baseUrl}}/pessoas/
 ?limit=10
 &offset=10
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMmEzNTZiZi01ZTM5LTQ5YzUtOWZmMC1hNmNkY2M3OWM5NTAiLCJpYXQiOjE3NjM2NzY5OTEsImV4cCI6MTc2MzY4MDU5MSwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.FqA6JSDc_Bq-BILR7DMeGNO7gHXSJGWR9uhKwfS_MIs
+Authorization: Bearer {{authToken}}
 
 ### Lista apenas uma pessoa
-GET {{baseUrl}}/pessoas/3
+GET {{baseUrl}}/pessoas/85c248ba-a300-4a45-9a14-45e57996b4c2
+Authorization: Bearer {{authToken}}
 
 ### Cria uma pessoa
 POST {{baseUrl}}/pessoas/
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
   {
-    "name": "luiz teste",
-    "email": "luiz@email.com",
+    "name": "pedro ernesyo",
+    "email": "passos@email.com",
     "password": "123456"
   
   }
@@ -26,12 +30,18 @@ Content-Type: application/json
 ### Atualiza uma pessoa
 PATCH {{baseUrl}}/pessoas/55e8e752-4d7c-4acf-801e-5dae4ac110c4/
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
   {
     "name": "Lucas Santos",
     "email": "lusca@email.com",
     "password": "12346666"
   }
+
+###
+DELETE {{baseUrl}}/pessoas/6a8d775d-fb27-4f82-920d-44f0c2f68441/
+Authorization: Bearer {{authToken}}
+
 
 ##--------------------------------------------##
 #Recados
@@ -74,7 +84,8 @@ DELETE {{baseUrl}}/recados/6a8d775d-fb27-4f82-920d-44f0c2f68441/
 ###------------------------------------------------------------###
 
 # AUTH
-#### Lista todos os recados
+#### Autenticação
+# @name authenticate
 POST  {{baseUrl}}/auth/
 Content-Type: application/json
 

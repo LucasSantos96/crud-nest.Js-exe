@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/pessoa.entity';
 import { Repository } from 'typeorm';
 import { HashingService } from 'src/auth/hashing/hashing.service';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 
 @Injectable()
 export class PessoasService {
@@ -43,7 +44,11 @@ export class PessoasService {
     }
     return person;
   }
-  async update(id: string, updatePessoaDto: UpdatePessoaDto) {
+  async update(
+    id: string,
+    updatePessoaDto: UpdatePessoaDto,
+    tokenPayloadDto: TokenPayloadDto,
+  ) {
     const personData = {
       name: updatePessoaDto?.name,
       //passwordHash: updatePessoaDto?.password,
@@ -64,5 +69,13 @@ export class PessoasService {
       throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
     }
     return this.PersonRepository.save(person);
+  }
+
+  async remove(id: string, tokenPayloadDto: TokenPayloadDto) {
+    const person = await this.PersonRepository.findOne({ where: { id } });
+    if (!person) {
+      throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
+    }
+    return await this.PersonRepository.remove(person);
   }
 }

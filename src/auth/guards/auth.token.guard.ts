@@ -36,7 +36,7 @@ export class AuthTokenGuard implements CanActivate {
       request[REQUEST_TOKEN_PAYLOAD_KEY] = payload;
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      console.error('Falaha ao logar!', error.name);
+      console.error('Falaha ao logar!', error.message);
     }
     return true;
   }

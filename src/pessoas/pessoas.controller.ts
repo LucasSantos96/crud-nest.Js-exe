@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Get,
@@ -30,8 +29,7 @@ export class PessoasController {
 
   @Get()
   findAll(@Req() req: Request) {
-    const payloadResponse = req[REQUEST_TOKEN_PAYLOAD_KEY];
-    console.log('SUCESSO! \n Dados do payload', payloadResponse);
+    console.log(req[REQUEST_TOKEN_PAYLOAD_KEY]);
     return this.pessoasService.findAll();
   }
   @UseGuards(AuthTokenGuard)

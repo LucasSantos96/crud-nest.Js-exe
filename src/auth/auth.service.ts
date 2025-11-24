@@ -50,6 +50,6 @@ export class AuthService {
       },
     );
 
-    return accessToken;
+    return { accessToken };
   }
 }

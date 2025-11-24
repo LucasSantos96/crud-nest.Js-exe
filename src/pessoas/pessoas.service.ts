@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -34,7 +38,7 @@ export class PessoasService {
   }
 
   async findAll() {
-    const person = await this.PersonRepository.find();
+    const person = await this.PersonRepository.find({ order: { id: 'DESC' } });
     return person;
   }
   async findOne(id: string) {
@@ -68,6 +72,13 @@ export class PessoasService {
     if (!person) {
       throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
     }
+
+    if (person.id !== tokenPayloadDto.sub) {
+      throw new ForbiddenException(
+        'NEGADO! Você só pode atualizar sua própria conta',
+      );
+    }
+
     return this.PersonRepository.save(person);
   }
 
@@ -75,6 +86,11 @@ export class PessoasService {
     const person = await this.PersonRepository.findOne({ where: { id } });
     if (!person) {
       throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
+    }
+    if (person.id !== tokenPayloadDto.sub) {
+      throw new ForbiddenException(
+        'NEGADO! Você só pode remover sua própria conta',
+      );
     }
     return await this.PersonRepository.remove(person);
   }

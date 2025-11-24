@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3000
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMmEzNTZiZi01ZTM5LTQ5YzUtOWZmMC1hNmNkY2M3OWM5NTAiLCJpYXQiOjE3NjM5Mzg3NzgsImV4cCI6MTc2Mzk0MjM3OCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.GRN80padwl98nx1sgRlDKX1tacBXgd2fpW6dXtYxwl8
+@authToken = {{authenticate.response.body.accessToken}}
 
 
 ###ControllerGetPessoa
@@ -9,11 +9,11 @@
 GET {{baseUrl}}/pessoas/
 ?limit=10
 &offset=10
-Authorization: Bearer {{authToken}}
+
 
 ### Lista apenas uma pessoa
 GET {{baseUrl}}/pessoas/85c248ba-a300-4a45-9a14-45e57996b4c2
-Authorization: Bearer {{authToken}}
+
 
 ### Cria uma pessoa
 POST {{baseUrl}}/pessoas/
@@ -21,25 +21,25 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
   {
-    "name": "pedro ernesyo",
-    "email": "passos@email.com",
+    "name": "teste",
+    "email": "teste@email.com",
     "password": "123456"
   
   }
 
 ### Atualiza uma pessoa
-PATCH {{baseUrl}}/pessoas/55e8e752-4d7c-4acf-801e-5dae4ac110c4/
+PATCH {{baseUrl}}/pessoas/a2a356bf-5e39-49c5-9ff0-a6cdcc79c950
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
   {
-    "name": "Lucas Santos",
-    "email": "lusca@email.com",
-    "password": "12346666"
+    "name": "Luiz Otávio",
+    "email": "luiz@email.com",
+    "password": "1234678"
   }
 
-###
-DELETE {{baseUrl}}/pessoas/6a8d775d-fb27-4f82-920d-44f0c2f68441/
+###0
+DELETE {{baseUrl}}/pessoas/a2a356bf-5e39-49c5-9ff0-a6cdcc79c950/
 Authorization: Bearer {{authToken}}
 
 
@@ -50,36 +50,38 @@ Authorization: Bearer {{authToken}}
 # @name RecadosController
 #### Lista todos os recados
 GET {{baseUrl}}/recados/
-?limit=2
-&offset=0
+
 
 
 ### Lista apenas um recado
-GET {{baseUrl}}/recados/3
+GET {{baseUrl}}/recados/e0cc2c6a-057f-4e83-909f-86fc5e35fa38
 
 ### Cria um recado
 POST {{baseUrl}}/recados/
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
 
   {
-    "texto": " recado novo",
-    "deId": "85c248ba-a300-4a45-9a14-45e57996b4c2",
-    "paraId": "a63d3f62-3bc2-4b31-b1d4-cde262da97f1"
+    "texto": " recado de teste",
+    "paraId": "55e8e752-4d7c-4acf-801e-5dae4ac110c4",
+    "lido": true
   
   }
 
 ### Atualiza um recado
-PATCH {{baseUrl}}/recados/27f8-17f95952d20d/
+PATCH {{baseUrl}}/recados/e0cc2c6a-057f-4e83-909f-86fc5e35fa38
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
   {
-    "texto": "Agora sou o primeiro",
-    "de": "Lucas",
-    "para": "Lara"
+    "texto": ""
   }
 
 ### Deleta um recado
-DELETE {{baseUrl}}/recados/6a8d775d-fb27-4f82-920d-44f0c2f68441/
+DELETE {{baseUrl}}/recados/172d79ed-ea73-4005-8b56-b94d7bab336a
+Authorization: Bearer {{authToken}}
+
 
 ###------------------------------------------------------------###
 
@@ -90,7 +92,6 @@ POST  {{baseUrl}}/auth/
 Content-Type: application/json
 
 {
-  "email": "luiz@email.com",
+  "email": "pedro@email.com",
   "password": "123456"
 }
-

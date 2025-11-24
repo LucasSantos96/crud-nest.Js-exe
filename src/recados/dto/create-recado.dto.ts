@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export class CreateRecadosDto {
   @IsString()
@@ -8,9 +14,8 @@ export class CreateRecadosDto {
 
   @IsUUID()
   @IsNotEmpty()
-  deId: string;
-
-  @IsUUID()
-  @IsNotEmpty()
   paraId: string;
+
+  @IsBoolean()
+  lido: boolean;
 }

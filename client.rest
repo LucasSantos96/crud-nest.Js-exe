@@ -1,6 +1,7 @@
 @baseUrl = http://localhost:3000
 
 @authToken = {{authenticate.response.body.accessToken}}
+@refreshToken ={{authenticate.response.body.refreshToken}}
 
 
 ###ControllerGetPessoa
@@ -94,4 +95,15 @@ Content-Type: application/json
 {
   "email": "pedro@email.com",
   "password": "123456"
+}
+
+
+# Re-Autenticação
+#### Autenticação
+# @name reAuthenticate
+POST  {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
 }

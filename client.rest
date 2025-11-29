@@ -64,7 +64,7 @@ Authorization: Bearer {{authToken}}
 
 
   {
-    "texto": " recado de teste",
+    "texto": " reacdo 3",
     "paraId": "55e8e752-4d7c-4acf-801e-5dae4ac110c4",
     "lido": true
   

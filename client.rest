@@ -107,3 +107,23 @@ Content-Type: application/json
 {
   "refreshToken": "{{refreshToken}}"
 }
+
+
+
+
+
+
+
+
+# UPLOAD
+#### 
+POST {{baseUrl}}/pessoas/upload
+Authorization: Bearer {{authToken}}
+Content-Type: multipart/form-data; boundary=----BoundaryABC123
+
+------BoundaryABC123
+Content-Disposition: form-data; name="file"; filename="samurai.jpg"
+Content-Type: image/jpeg
+
+< ./dev/img/bushido-samurai-wt-3440x1440.jpg
+------BoundaryABC123--

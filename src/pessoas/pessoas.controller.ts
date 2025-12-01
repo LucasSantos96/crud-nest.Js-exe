@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Controller,
   Get,
@@ -11,6 +10,10 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  BadRequestException,
 } from '@nestjs/common';
 import { PessoasService } from './pessoas.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
@@ -65,11 +68,24 @@ export class PessoasController {
   @UseGuards(AuthTokenGuard)
   @UseInterceptors(FileInterceptor('file'))
   @Post('upload')
-  async upload(
-    @UploadedFile('') file: Express.Multer.File,
+  async uploadPicture(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+          new FileTypeValidator({
+            fileType: /(image\/jpeg|image\/png)$/,
+          }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
     @TokenPayloadParam()
     TokenPayloadDto: TokenPayloadDto,
   ) {
+    if (file.size < 1024) {
+      throw new BadRequestException('File Too Small');
+    }
     const fileExtension = path
       .extname(file.originalname)
       .toLowerCase()
@@ -86,3 +102,16 @@ export class PessoasController {
     };
   }
 }
+//exemplo usado para reveber multiplas fotos
+/*const result: string[] = [];
+    files.forEach(async (file) => {
+      const fileExtension = path
+        .extname(file.originalname)
+        .toLowerCase()
+        .substring(1);
+      const fileName = `${randomUUID()}.${fileExtension}`;
+      const fileFullPath = path.resolve(process.cwd(), 'pictures', fileName);
+      result.push(fileFullPath);
+      await fs.writeFile(fileFullPath, file.buffer);
+    });
+    return result;*/

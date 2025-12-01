@@ -122,8 +122,8 @@ Authorization: Bearer {{authToken}}
 Content-Type: multipart/form-data; boundary=----BoundaryABC123
 
 ------BoundaryABC123
-Content-Disposition: form-data; name="file"; filename="samurai.jpg"
-Content-Type: image/jpeg
+Content-Disposition: form-data; name="file"; filename="pngImage.png"
+Content-Type: image/png
 
-< ./dev/img/bushido-samurai-wt-3440x1440.jpg
+< ./dev/img/3d-nft-icon-developer-male-illustration - Copia.png
 ------BoundaryABC123--

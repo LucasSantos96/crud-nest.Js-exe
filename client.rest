@@ -127,3 +127,6 @@ Content-Type: image/png
 
 < ./dev/img/3d-nft-icon-developer-male-illustration - Copia.png
 ------BoundaryABC123--
+
+### Ver Imagem
+GET {{baseUrl}}/pictures/af8a9124-5795-40e5-b5bc-6ec7084f6650.png

@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PessoasModule } from 'src/pessoas/pessoas.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -26,6 +28,10 @@ import { AuthModule } from 'src/auth/auth.module';
     RecadosModule,
     PessoasModule,
     AuthModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', '..', '/pictures'),
+      serveRoot: '/pictures',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

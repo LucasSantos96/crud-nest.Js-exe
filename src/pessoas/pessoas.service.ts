@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -10,6 +11,8 @@ import { Person } from './entities/pessoa.entity';
 import { Repository } from 'typeorm';
 import { HashingService } from 'src/auth/hashing/hashing.service';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
+import * as path from 'path';
+import * as fs from 'fs/promises';
 
 @Injectable()
 export class PessoasService {
@@ -94,4 +97,38 @@ export class PessoasService {
     }
     return await this.PersonRepository.remove(person);
   }
+
+  async UploadPicture(
+    file: Express.Multer.File,
+    TokenPayloadDto: TokenPayloadDto,
+  ) {
+    if (file.size < 1024) {
+      throw new BadRequestException('File Too Small');
+    }
+    const person = await this.findOne(TokenPayloadDto.sub);
+    const fileExtension = path
+      .extname(file.originalname)
+      .toLowerCase()
+      .substring(1);
+    const fileName = `${TokenPayloadDto.sub}.${fileExtension}`;
+    const fileFullPath = path.resolve(process.cwd(), 'pictures', fileName);
+    await fs.writeFile(fileFullPath, file.buffer);
+
+    person.picture = fileName;
+    await this.PersonRepository.save(person);
+    return person;
+  }
 }
+//exemplo usado para reveber multiplas fotos
+/*const result: string[] = [];
+    files.forEach(async (file) => {
+      const fileExtension = path
+        .extname(file.originalname)
+        .toLowerCase()
+        .substring(1);
+      const fileName = `${randomUUID()}.${fileExtension}`;
+      const fileFullPath = path.resolve(process.cwd(), 'pictures', fileName);
+      result.push(fileFullPath);
+      await fs.writeFile(fileFullPath, file.buffer);
+    });
+    return result;*/

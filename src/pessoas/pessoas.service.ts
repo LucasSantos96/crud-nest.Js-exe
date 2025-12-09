@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -35,8 +37,12 @@ export class PessoasService {
       const person = this.PersonRepository.create(newPerson);
       await this.PersonRepository.save(person);
       return person;
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new ConflictException('Email já cadastrado');
+      }
+      throw error;
+      console.error(error);
     }
   }
 

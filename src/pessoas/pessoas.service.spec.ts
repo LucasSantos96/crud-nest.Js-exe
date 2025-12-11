@@ -7,7 +7,7 @@ import { Person } from './entities/pessoa.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('PessoasService', () => {
   // descreve o conjunto de testes para PessoasService
@@ -28,6 +28,8 @@ describe('PessoasService', () => {
             // mock de create e save simulando uma função (jest.fn())
             create: jest.fn(),
             save: jest.fn(),
+            findOneBy: jest.fn(),
+            find: jest.fn(),
           },
         },
         {
@@ -121,6 +123,53 @@ describe('PessoasService', () => {
         .mockRejectedValue(new Error('Erro genérico')); // faz o mock de personRepository.save lançando um erro genérico
 
       await expect(pessoaService.create({} as any)).rejects.toThrow(Error); // espera que a chamada ao create dispare um Error
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return a person if the person be found', async () => {
+      const personId = '123';
+      const personFound = {
+        id: personId,
+        name: 'lucas',
+        email: 'email@email.com',
+        passwordHash: 'PASSWORDHASH',
+      };
+
+      jest
+        .spyOn(personRepository, 'findOneBy')
+        .mockResolvedValue(personFound as any);
+
+      const result = await pessoaService.findOne(personId);
+      expect(result).toEqual(personFound);
+    });
+
+    it('should return undefined if the person not be found', async () => {
+      const personId = '123';
+      const personFound = {
+        id: personId,
+        name: 'lucas',
+        email: 'email@email.com',
+        passwordHash: 'PASSWORDHASH',
+      };
+      await expect(pessoaService.findOne(personId)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('fildAll', () => {
+    it('should return all', async () => {
+      //cria um array de pessoas
+      const peopleMock: Person[] = [];
+      //Observa o repository,find e retorna o valor resolvido como peopleMock (Array de pessoas)
+      jest.spyOn(personRepository, 'find').mockResolvedValue(peopleMock);
+
+      //ACTION= Busca todas as pessoas
+      const result = await pessoaService.findAll();
+
+      //espera que o result seja igual ao peopleMock( array de pessoas)
+      expect(result).toEqual(peopleMock);
     });
   });
 });

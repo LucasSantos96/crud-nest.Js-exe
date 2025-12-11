@@ -47,16 +47,18 @@ export class PessoasService {
   }
 
   async findAll() {
-    const person = await this.PersonRepository.find({ order: { id: 'DESC' } });
-    return person;
+    const people = await this.PersonRepository.find({ order: { id: 'DESC' } });
+    return people;
   }
+
   async findOne(id: string) {
-    const person = await this.PersonRepository.findOne({ where: { id } });
+    const person = await this.PersonRepository.findOneBy({ id });
     if (!person) {
       throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
     }
     return person;
   }
+
   async update(
     id: string,
     updatePessoaDto: UpdatePessoaDto,

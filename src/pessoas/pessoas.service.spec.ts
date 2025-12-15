@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/unbound-method */
 import { HashingService } from 'src/auth/hashing/hashing.service';
@@ -7,7 +9,11 @@ import { Person } from './entities/pessoa.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 
 describe('PessoasService', () => {
   // descreve o conjunto de testes para PessoasService
@@ -30,6 +36,7 @@ describe('PessoasService', () => {
             save: jest.fn(),
             findOneBy: jest.fn(),
             find: jest.fn(),
+            preload: jest.fn(),
           },
         },
         {
@@ -170,6 +177,96 @@ describe('PessoasService', () => {
 
       //espera que o result seja igual ao peopleMock( array de pessoas)
       expect(result).toEqual(peopleMock);
+    });
+  });
+
+  describe('update', () => {
+    it('should to update a person if authorized', async () => {
+      //Arrange
+      const personId = '1';
+      const updatePessoaDto = {
+        name: 'lucas',
+        password: '12345',
+      };
+      const tokenPlayload = { sub: personId } as any;
+      const passwordHash = 'HASHDESENHA';
+      const updatedPessoa = {
+        id: personId,
+        name: updatePessoaDto.name,
+        passwordHash,
+      };
+
+      jest.spyOn(hashingService, 'hash').mockResolvedValue(passwordHash);
+
+      jest
+        .spyOn(personRepository, 'preload')
+        .mockResolvedValue(updatedPessoa as any);
+
+      jest
+        .spyOn(personRepository, 'save')
+        .mockResolvedValue(updatedPessoa as any);
+      //Act
+
+      const result = await pessoaService.update(
+        personId,
+        updatePessoaDto,
+        tokenPlayload,
+      );
+
+      //Assert
+      expect(hashingService.hash).toHaveBeenCalledWith(
+        updatePessoaDto.password,
+      );
+      expect(personRepository.preload).toHaveBeenCalledWith({
+        id: personId,
+        name: updatePessoaDto.name,
+        passwordHash,
+      });
+
+      expect(personRepository.save).toHaveBeenCalledWith(updatedPessoa);
+      expect(result).toEqual(updatedPessoa);
+    });
+    it('should return ForbiddenException if user not authorized', async () => {
+      //Arrange
+      const personId = '1';
+      const tokenPayload = { sub: '2' } as any;
+      const updatePessoaDto = { name: 'lucas' };
+      const personExisting = { id: personId, name: updatePessoaDto.name };
+
+      //simula que a pessoa existe
+      jest
+        .spyOn(personRepository, 'preload')
+        .mockResolvedValue(personExisting as any);
+
+      //Act and Assert
+      await expect(
+        pessoaService.update(personId, updatePessoaDto, tokenPayload),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should return NotFoundException if user not exist', async () => {
+      //Arrange
+      const personId = '1';
+      const tokenPayload = { sub: personId } as any;
+      const updatePessoaDto = { name: 'lucas' };
+
+      //Act and Assert
+      await expect(
+        pessoaService.update(personId, updatePessoaDto, tokenPayload),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove a person if authorized', async () => {
+      //ARRANJE
+      
+
+      //ACT
+
+
+
+      //ASSERT
     });
   });
 });

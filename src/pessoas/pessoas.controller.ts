@@ -80,6 +80,6 @@ export class PessoasController {
     @TokenPayloadParam()
     TokenPayloadDto: TokenPayloadDto,
   ) {
-    return this.pessoasService.UploadPicture(file, TokenPayloadDto);
+    return this.pessoasService.uploadPicture(file, TokenPayloadDto);
   }
 }

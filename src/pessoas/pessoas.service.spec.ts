@@ -10,10 +10,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
+import path from 'path';
+import * as fs from 'fs/promises';
+
+jest.mock('fs/promises'); //Mocka o modulo fs
 
 describe('PessoasService', () => {
   // descreve o conjunto de testes para PessoasService
@@ -37,6 +42,7 @@ describe('PessoasService', () => {
             findOneBy: jest.fn(),
             find: jest.fn(),
             preload: jest.fn(),
+            remove: jest.fn(),
           },
         },
         {
@@ -260,13 +266,127 @@ describe('PessoasService', () => {
   describe('remove', () => {
     it('should remove a person if authorized', async () => {
       //ARRANJE
-      
+      const personId = '1';
+      const tokenPayload = { sub: personId } as any;
+      const personExisting = { id: personId, name: 'lucas' };
+
+      //retorn uma pessoa existente
+      jest
+        .spyOn(pessoaService, 'findOne')
+        .mockResolvedValue(personExisting as any);
+
+      //O método remove do repositório também vai retornar a pessoa existente
+      jest
+        .spyOn(personRepository, 'remove')
+        .mockResolvedValue(personExisting as any);
 
       //ACT
 
-
+      const result = await pessoaService.remove(personId, tokenPayload);
 
       //ASSERT
+      //Espera que o findOne Seja chamado com o Id da pessoa
+      expect(pessoaService.findOne).toHaveBeenCalledWith(personId);
+
+      //Espera que remove do repositório seja chamado com a pessoa existente
+      expect(personRepository.remove).toHaveBeenCalledWith(personExisting);
+
+      //Espera que a pessoa apagada seka retornada
+      expect(result).toEqual(personExisting);
+    });
+
+    it('should throw NotFoundException when findOne returns undefined', async () => {
+      const personId = '1';
+      const tokenPayload = { sub: personId } as any;
+
+      // Simula findOne retornando undefined (pessoa não existe)
+      jest.spyOn(pessoaService, 'findOne').mockResolvedValue(undefined as any);
+
+      await expect(
+        pessoaService.remove(personId, tokenPayload),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should return NotFoundException if user not exist', async () => {
+      //Arrange
+      const personId = '1';
+      const tokenPayload = { sub: personId } as any;
+      //Espero que o findOne seja chamado como pessoa existente
+      jest
+        .spyOn(pessoaService, 'findOne')
+        .mockRejectedValue(new NotFoundException());
+      //Act and Assert
+      await expect(
+        pessoaService.remove(personId, tokenPayload),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should return ForbiddenException if not authorized', async () => {
+      //ARRANJE
+      const personId = '1';
+      const tokenPayload = { sub: '2' } as any;
+      const personExisting = { id: personId, name: 'lucas' };
+
+      //Espero que o findOne seja chamado como pessoa existente
+      jest
+        .spyOn(pessoaService, 'findOne')
+        .mockResolvedValue(personExisting as any);
+
+      //Espero que o serviço rejeite porque o usuário é diferente da pessoa
+      await expect(
+        pessoaService.remove(personId, tokenPayload),
+      ).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  describe('uploadPicture', () => {
+    it('should save the image and update a person', async () => {
+      const mockFile = {
+        originalname: 'teste.png',
+        size: 2000,
+        buffer: Buffer.from('file content'),
+      } as Express.Multer.File;
+
+      const mockPessoa = {
+        id: '1',
+        name: 'lucas',
+        email: 'email@email.com',
+      } as Person;
+
+      const tokenPayload = { sub: '1' } as any;
+
+      jest.spyOn(pessoaService, 'findOne').mockResolvedValue(mockPessoa);
+      jest.spyOn(personRepository, 'save').mockResolvedValue({
+        ...mockPessoa,
+        picture: '1.png',
+      });
+      const filePath = path.resolve(process.cwd(), 'pictures', '1.png');
+
+      const result = await pessoaService.uploadPicture(mockFile, tokenPayload);
+
+      expect(fs.writeFile).toHaveBeenCalledWith(filePath, mockFile.buffer);
+      expect(personRepository.save).toHaveBeenCalledWith({
+        ...mockPessoa,
+        picture: '1.png',
+      });
+      expect(result).toEqual({
+        ...mockPessoa,
+        picture: '1.png',
+      });
+    });
+
+    it('should return BadRequestException if file to smaller', async () => {
+      const mockFile = {
+        originalname: 'teste.png',
+        size: 500,
+        buffer: Buffer.from('file content'),
+      } as Express.Multer.File;
+
+      const tokenPayload = { sub: '1' } as any;
+
+      await expect(
+        pessoaService.uploadPicture(mockFile, tokenPayload),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });

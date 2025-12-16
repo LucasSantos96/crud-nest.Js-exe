@@ -42,7 +42,6 @@ export class PessoasService {
         throw new ConflictException('Email já cadastrado');
       }
       throw error;
-      console.error(error);
     }
   }
 
@@ -94,7 +93,7 @@ export class PessoasService {
   }
 
   async remove(id: string, tokenPayloadDto: TokenPayloadDto) {
-    const person = await this.PersonRepository.findOne({ where: { id } });
+    const person = await this.findOne(id);
     if (!person) {
       throw new NotFoundException(`Pessoa com id ${id} não encontrada`);
     }
@@ -106,7 +105,7 @@ export class PessoasService {
     return await this.PersonRepository.remove(person);
   }
 
-  async UploadPicture(
+  async uploadPicture(
     file: Express.Multer.File,
     TokenPayloadDto: TokenPayloadDto,
   ) {

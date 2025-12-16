@@ -1,4 +1,4 @@
-import { PaginationDto } from 'src/app/common/dto/pagination.dto';
+import { PaginationDto } from '../../src/app/common/dto/pagination.dto';
 import { CreateRecadosDto } from './dto/create-recado.dto';
 import { UpdateRecadosDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';

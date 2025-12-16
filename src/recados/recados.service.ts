@@ -9,9 +9,9 @@ import {
 import { Recado } from './entities/recado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PessoasService } from 'src/pessoas/pessoas.service';
+import { PessoasService } from '../../src/pessoas/pessoas.service';
 import { Person } from 'src/pessoas/entities/pessoa.entity';
-import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
+import { TokenPayloadDto } from '../../src/auth/dto/token-payload.dto';
 
 @Injectable()
 export class RecadosService {
